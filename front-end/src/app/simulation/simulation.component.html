@@ -1,0 +1,67 @@
+<po-page-detail
+  [p-title]="title"
+  [p-breadcrumb]="breadcrumb"
+  (p-cancel)="cancel()"
+>
+  <form [formGroup]="simulationForm">
+    <div class="po-row">
+      <po-combo
+        name="origin"
+        class="po-md-6"
+        formControlName="origin"
+        p-label="Selecione a origem da ligação"
+        [p-options]="cities$ | async"
+        data-cy="origin"
+      >
+      </po-combo>
+      <po-combo
+        name="destiny"
+        class="po-md-6"
+        formControlName="destiny"
+        p-label="Selecione o destino da ligação"
+        [p-options]="cities$ | async"
+        data-cy="destiny"
+      >
+      </po-combo>
+    </div>
+
+    <div class="po-row">
+      <po-combo
+        name="plan"
+        class="po-md-6"
+        formControlName="plan"
+        [p-options]="plans$ | async"
+        p-label="Plano da Promoção"
+        data-cy="plan"
+      >
+      </po-combo>
+
+      <po-number
+        class="po-md-6"
+        name="time"
+        formControlName="time"
+        p-label="Quantidade de minutos"
+        data-cy="time"
+      >
+      </po-number>
+    </div>
+  </form>
+  <hr />
+  <div class="po-row" *ngIf="simulation$ | async as simulation">
+    <po-widget class="po-md-6" p-title="Valor Com Plano">
+      <div class="po-font-subtitle po-text-center" data-cy="valueWithPlan">
+        {{ simulation.valueWithPlan | currency }}
+      </div>
+      <div class="po-text-center" data-cy="planDescription">
+        {{ simulation.planDescription || plano }}
+      </div>
+    </po-widget>
+
+    <po-widget class="po-md-6" p-title="Valor sem plano">
+      <div class="po-font-subtitle po-text-center" data-cy="valueWithoutPlan">
+        {{ simulation.valueWithoutPlan | currency }}
+      </div>
+      <div class="po-text-center">Sem Plano</div>
+    </po-widget>
+  </div>
+</po-page-detail>

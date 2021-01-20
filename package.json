@@ -1,0 +1,42 @@
+{
+  "name": "ConverseMuito",
+  "version": "1.0.0",
+  "description": "Projeto técnico",
+  "main": "index.js",
+  "scripts": {
+    "install:api": "cd api && npm i",
+    "install:front-end": "cd front-end && npm i",
+    "install:main": "npm i",
+    "install:all": "npm run install:api && npm run install:front-end && npm run install:main",
+    "lint:api": "cd api && npm run lint",
+    "lint:front": "cd front-end && npm run lint",
+    "lint:all": "npm run lint:api && npm run lint:front",
+    "test:unit:api": "cd api && npm run test:cov",
+    "test:unit:front": "cd front-end && npm test",
+    "test:unit:all": "npm run test:unit:api && npm run test:unit:front",
+    "test:e2e:api": "cd api && npm run test:e2e",
+    "test:e2e:front": "concurrently npm:start npm:cy:run",
+    "test:e2e:all": "npm run test:e2e:api && npm run test:e2e:front",
+    "start:api": "cd api && npm run start",
+    "start:front": "cd front-end && npm run start",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:start": "concurrently npm:start npm:cy:open",
+    "start": "concurrently npm:start:api npm:start:front"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvarocamillont/ConverseMuito.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alvarocamillont/ConverseMuito/issues"
+  },
+  "homepage": "https://github.com/alvarocamillont/ConverseMuito#readme",
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "cypress": "^6.3.0"
+  }
+}
