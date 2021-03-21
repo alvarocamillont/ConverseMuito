@@ -28,4 +28,4 @@ jobs:
     - run: npm run install:all
     - run: npm run lint:all
     - run: npm run test:unit:all
-    - run: npm run test:e2e:all
+    - run: npm run test:e2e:api
