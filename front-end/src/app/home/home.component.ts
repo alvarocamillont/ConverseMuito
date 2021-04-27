@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   menu!: Array<PoMenuItem>;
 
   constructor() {}
-
+  // Teste
   ngOnInit(): void {
     this.setHomeInfo();
   }
