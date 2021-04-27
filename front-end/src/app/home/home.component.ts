@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.setHomeInfo();
   }
-
+  // Teste
   setHomeInfo(): void {
     this.menu = this.getMenus();
   }
