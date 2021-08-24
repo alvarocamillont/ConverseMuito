@@ -9,4 +9,6 @@ import { FeesModule } from './fees/fees.module';
   imports: [CitiesModule, PlansModule, SimulationsModule, FeesModule],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule { }
+
+// Teste
