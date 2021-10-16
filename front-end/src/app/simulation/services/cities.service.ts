@@ -11,8 +11,7 @@ const URL = environment.api;
 export class CitiesService {
   constructor(private http: HttpClient) {}
 
-  getCities(): Observable<any> {
-    return this.http
-      .get<any>(`${URL}/cities`);
+  getCities(): Observable<CitiesAPI> {
+    return this.http.get<CitiesAPI>(`${URL}/cities`);
   }
 }

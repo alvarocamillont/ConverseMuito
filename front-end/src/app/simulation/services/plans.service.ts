@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { PlansApi } from './plans';
+import { Plan, PlansApi } from './plans';
 
 const URL = environment.api;
 @Injectable({
@@ -15,7 +15,7 @@ export class PlansService {
     return this.http.get<PlansApi>(`${URL}/plans`);
   }
 
-  getPlan(id: string): Observable<any> {
+  getPlan(id: string): Observable<Plan> {
     return this.http.get<any>(`${URL}/plans/${id}`);
   }
 }
