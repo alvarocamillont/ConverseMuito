@@ -2,14 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PoBreadcrumb, PoSelectOption } from '@po-ui/ng-components';
 import { forkJoin, Observable, of } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  pluck,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
 import { CitiesService } from './services/cities.service';
 import { PlansService } from './services/plans.service';
 import { SimulationForm, SimulationValueResult } from './services/simulation';
@@ -29,76 +21,16 @@ export class SimulationComponent implements OnInit {
   };
   plano = 'Plano';
 
-  cities$: Observable<Array<PoSelectOption>>;
-  plans$: Observable<Array<PoSelectOption>>;
-  simulation$: Observable<SimulationValueResult>;
+  cities: Array<PoSelectOption>;
+  plans: Array<PoSelectOption>;
+  simulation: SimulationValueResult;
 
   constructor(
     private formBuilder: FormBuilder,
-    private citiesService: CitiesService,
-    private plansService: PlansService,
-    private simulationService: SimulationService
   ) {}
 
   ngOnInit(): void {
     this.setForm();
-    this.setCitiesOption();
-    this.setPlansOption();
-    this.setSimulation();
-  }
-
-  private setSimulation(): void {
-    this.simulation$ = this.simulationForm.valueChanges.pipe(
-      debounceTime(WAITING),
-      switchMap((model: SimulationForm) => this.getSimulationValue(model))
-    );
-  }
-
-  private getSimulationValue(
-    model: SimulationForm
-  ): Observable<SimulationValueResult> {
-    const { origin, destiny, time, plan } = model;
-
-    return forkJoin({
-      simulation: this.simulationService.simulate(origin, destiny, time, plan),
-      planDetail: this.plansService.getPlan(plan),
-    }).pipe(
-      map((simulationPart) => {
-        const {
-          planDetail,
-          simulation: { valueWithPlan, valueWithoutPlan },
-        } = simulationPart;
-        const planDescription = planDetail?.description;
-
-        return {
-          planDescription,
-          valueWithPlan,
-          valueWithoutPlan,
-        };
-      })
-    );
-  }
-
-  private setCitiesOption(): void {
-    this.cities$ = this.citiesService.getCities().pipe(
-      map((cities) => {
-        return cities.map((city) => ({
-          label: `${city.name} - ${city.code}`,
-          value: city.code,
-        }));
-      })
-    );
-  }
-
-  private setPlansOption(): void {
-    this.plans$ = this.plansService.getPlans().pipe(
-      map((plans) => {
-        return plans.map((plan) => ({
-          label: plan.description,
-          value: plan.id,
-        }));
-      })
-    );
   }
 
   private setForm(): void {

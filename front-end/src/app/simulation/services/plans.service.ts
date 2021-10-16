@@ -12,8 +12,8 @@ const URL = environment.api;
 export class PlansService {
   constructor(private http: HttpClient) {}
 
-  getPlans(): Observable<Plans> {
-    return this.http.get<PlansApi>(`${URL}/plans`).pipe(pluck('items'));
+  getPlans(): Observable<any> {
+    return this.http.get<any>(`${URL}/plans`);
   }
 
   getPlan(id: string): Observable<Plan> {

@@ -10,7 +10,7 @@
         class="po-md-6"
         formControlName="origin"
         p-label="Selecione a origem da ligação"
-        [p-options]="cities$ | async"
+        [p-options]="cities"
         data-cy="origin"
       >
       </po-combo>
@@ -19,7 +19,7 @@
         class="po-md-6"
         formControlName="destiny"
         p-label="Selecione o destino da ligação"
-        [p-options]="cities$ | async"
+        [p-options]="cities"
         data-cy="destiny"
       >
       </po-combo>
@@ -30,7 +30,7 @@
         name="plan"
         class="po-md-6"
         formControlName="plan"
-        [p-options]="plans$ | async"
+        [p-options]="plans"
         p-label="Plano da Promoção"
         data-cy="plan"
       >
@@ -47,7 +47,7 @@
     </div>
   </form>
   <hr />
-  <div class="po-row" *ngIf="simulation$ | async as simulation">
+  <div class="po-row" *ngIf="simulation">
     <po-widget class="po-md-6" p-title="Valor Com Plano">
       <div class="po-font-subtitle po-text-center" data-cy="valueWithPlan">
         {{ simulation.valueWithPlan | currency }}
