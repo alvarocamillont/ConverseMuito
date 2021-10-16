@@ -45,8 +45,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   private setPlansOption(): void {
     this.sub.add(
-      this.planService.getPlans().subscribe((plansApi) => {
-        const plansFromApi = plansApi.items;
+      this.planService.getPlans().subscribe((plansFromApi) => {
         this.plans = plansFromApi.map((plan) => {
           return {
             label: plan.description,
@@ -59,8 +58,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   private setCitiesOption(): void {
     this.sub.add(
-      this.citiesService.getCities().subscribe((citiesApi) => {
-        const citiesFromApi = citiesApi.items;
+      this.citiesService.getCities().subscribe((citiesFromApi) => {
         this.cities = citiesFromApi.map((city) => {
           return {
             label: `${city.name} - ${city.code}`,

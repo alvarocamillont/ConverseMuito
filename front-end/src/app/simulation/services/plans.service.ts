@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { PlansApi } from './plans';
+import { Plans, PlansApi } from './plans';
 
 const URL = environment.api;
 @Injectable({
@@ -11,8 +12,8 @@ const URL = environment.api;
 export class PlansService {
   constructor(private http: HttpClient) {}
 
-  getPlans(): Observable<PlansApi> {
-    return this.http.get<PlansApi>(`${URL}/plans`);
+  getPlans(): Observable<Plans> {
+    return this.http.get<PlansApi>(`${URL}/plans`).pipe(pluck('items'));
   }
 
   getPlan(id: string): Observable<any> {
