@@ -27,10 +27,38 @@ export class SimulationComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private planService: PlansService,
+    private citiesService: CitiesService
   ) {}
 
   ngOnInit(): void {
     this.setForm();
+    this.setPlansOption();
+    this.setCitiesOption();
+  }
+
+  private setPlansOption(): void {
+    this.planService.getPlans().subscribe((plansApi) => {
+      const plansFromApi = plansApi.items;
+      this.plans = plansFromApi.map((plan) => {
+        return {
+          label: plan.description,
+          value: plan.id,
+        };
+      });
+    });
+  }
+
+  private setCitiesOption(): void {
+    this.citiesService.getCities().subscribe((citiesApi) => {
+      const citiesFromApi = citiesApi.items;
+      this.cities = citiesFromApi.map((city) => {
+        return {
+          label: `${city.name} - ${city.code}`,
+          value: city.code,
+        };
+      });
+    });
   }
 
   private setForm(): void {
