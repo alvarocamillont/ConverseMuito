@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PoBreadcrumb, PoSelectOption } from '@po-ui/ng-components';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CitiesService } from './services/cities.service';
 import { PlansService } from './services/plans.service';
 import { SimulationForm, SimulationValueResult } from './services/simulation';
@@ -13,7 +14,7 @@ const WAITING = 300;
   templateUrl: './simulation.component.html',
   styleUrls: ['./simulation.component.css'],
 })
-export class SimulationComponent implements OnInit, OnDestroy {
+export class SimulationComponent implements OnInit {
   simulationForm!: FormGroup;
   title = 'Simulação de Tarifa';
   breadcrumb: PoBreadcrumb = {
@@ -21,15 +22,13 @@ export class SimulationComponent implements OnInit, OnDestroy {
   };
   plano = 'Plano';
 
-  cities: Array<PoSelectOption>;
-  plans: Array<PoSelectOption>;
+  cities$: Observable<Array<PoSelectOption>>;
+  plans$: Observable<Array<PoSelectOption>>;
   simulation: SimulationValueResult;
-
-  sub = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
-    private planService: PlansService,
+    private plansService: PlansService,
     private citiesService: CitiesService
   ) {}
 
@@ -39,32 +38,24 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.setCitiesOption();
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
-
-  private setPlansOption(): void {
-    this.sub.add(
-      this.planService.getPlans().subscribe((plansFromApi) => {
-        this.plans = plansFromApi.map((plan) => {
-          return {
-            label: plan.description,
-            value: plan.id,
-          };
-        });
+  private setCitiesOption(): void {
+    this.cities$ = this.citiesService.getCities().pipe(
+      map((cities) => {
+        return cities.map((city) => ({
+          label: `${city.name} - ${city.code}`,
+          value: city.code,
+        }));
       })
     );
   }
 
-  private setCitiesOption(): void {
-    this.sub.add(
-      this.citiesService.getCities().subscribe((citiesFromApi) => {
-        this.cities = citiesFromApi.map((city) => {
-          return {
-            label: `${city.name} - ${city.code}`,
-            value: city.code,
-          };
-        });
+  private setPlansOption(): void {
+    this.plans$ = this.plansService.getPlans().pipe(
+      map((plans) => {
+        return plans.map((plan) => ({
+          label: plan.description,
+          value: plan.id,
+        }));
       })
     );
   }

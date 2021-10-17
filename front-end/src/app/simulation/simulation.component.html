@@ -10,7 +10,7 @@
         class="po-md-6"
         formControlName="origin"
         p-label="Selecione a origem da ligação"
-        [p-options]="cities"
+        [p-options]="cities$ | async"
         data-cy="origin"
       >
       </po-combo>
@@ -19,7 +19,7 @@
         class="po-md-6"
         formControlName="destiny"
         p-label="Selecione o destino da ligação"
-        [p-options]="cities"
+        [p-options]="cities$ | async"
         data-cy="destiny"
       >
       </po-combo>
@@ -30,7 +30,7 @@
         name="plan"
         class="po-md-6"
         formControlName="plan"
-        [p-options]="plans"
+        [p-options]="plans$ | async"
         p-label="Plano da Promoção"
         data-cy="plan"
       >
