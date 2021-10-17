@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PoBreadcrumb, PoSelectOption } from '@po-ui/ng-components';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { CitiesService } from './services/cities.service';
 import { PlansService } from './services/plans.service';
 import { SimulationForm, SimulationValueResult } from './services/simulation';
@@ -24,18 +24,20 @@ export class SimulationComponent implements OnInit {
 
   cities$: Observable<Array<PoSelectOption>>;
   plans$: Observable<Array<PoSelectOption>>;
-  simulation: SimulationValueResult;
+  simulation$: Observable<SimulationValueResult>;
 
   constructor(
     private formBuilder: FormBuilder,
     private plansService: PlansService,
-    private citiesService: CitiesService
+    private citiesService: CitiesService,
+    private simulationService: SimulationService
   ) {}
 
   ngOnInit(): void {
     this.setForm();
     this.setPlansOption();
     this.setCitiesOption();
+    this.setSimulation();
   }
 
   private setCitiesOption(): void {
@@ -58,6 +60,10 @@ export class SimulationComponent implements OnInit {
         }));
       })
     );
+  }
+
+  private setSimulation(): void {
+    this.simulation$ = this.simulationForm.valueChanges.pipe(tap(console.log));
   }
 
   private setForm(): void {

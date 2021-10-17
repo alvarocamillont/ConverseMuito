@@ -47,7 +47,7 @@
     </div>
   </form>
   <hr />
-  <div class="po-row" *ngIf="simulation">
+  <div class="po-row" *ngIf="simulation$ | async as simulation">
     <po-widget class="po-md-6" p-title="Valor Com Plano">
       <div class="po-font-subtitle po-text-center" data-cy="valueWithPlan">
         {{ simulation.valueWithPlan | currency }}
