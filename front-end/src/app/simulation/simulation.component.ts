@@ -82,12 +82,21 @@ export class SimulationComponent implements OnInit {
   ): Observable<SimulationValueResult> {
     const { origin, destiny, time, plan } = model;
 
-    return this.simulationService.simulate(origin, destiny, time, plan).pipe(
-      map((simulation) => {
+    return forkJoin({
+      simulation: this.simulationService.simulate(origin, destiny, time, plan),
+      planDetail: this.plansService.getPlan(plan),
+    }).pipe(
+      map((simulationPart) => {
+        const {
+          planDetail,
+          simulation: { valueWithPlan, valueWithoutPlan },
+        } = simulationPart;
+        const planDescription = planDetail?.description;
+
         return {
-          planDescription: '',
-          valueWithPlan: simulation.valueWithPlan,
-          valueWithoutPlan: simulation.valueWithoutPlan,
+          planDescription,
+          valueWithPlan,
+          valueWithoutPlan,
         };
       })
     );
