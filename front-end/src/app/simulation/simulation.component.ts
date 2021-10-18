@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PoBreadcrumb, PoSelectOption } from '@po-ui/ng-components';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
 import { CitiesService } from './services/cities.service';
 import { PlansService } from './services/plans.service';
 import { SimulationForm, SimulationValueResult } from './services/simulation';
@@ -64,6 +64,7 @@ export class SimulationComponent implements OnInit {
 
   private setSimulation(): void {
     this.simulation$ = this.simulationForm.valueChanges.pipe(
+      debounceTime(WAITING),
       switchMap((model: SimulationForm) => this.getSimulationValue(model))
     );
   }
