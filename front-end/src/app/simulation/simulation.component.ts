@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PoBreadcrumb, PoSelectOption } from '@po-ui/ng-components';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { CitiesService } from './services/cities.service';
 import { PlansService } from './services/plans.service';
 import { SimulationForm, SimulationValueResult } from './services/simulation';
@@ -63,7 +63,9 @@ export class SimulationComponent implements OnInit {
   }
 
   private setSimulation(): void {
-    this.simulation$ = this.simulationForm.valueChanges.pipe(tap(console.log));
+    this.simulation$ = this.simulationForm.valueChanges.pipe(
+      switchMap((model: SimulationForm) => this.getSimulationValue(model))
+    );
   }
 
   private setForm(): void {
@@ -73,6 +75,22 @@ export class SimulationComponent implements OnInit {
       time: ['', [Validators.required]],
       plan: ['', [Validators.required]],
     });
+  }
+
+  private getSimulationValue(
+    model: SimulationForm
+  ): Observable<SimulationValueResult> {
+    const { origin, destiny, time, plan } = model;
+
+    return this.simulationService.simulate(origin, destiny, time, plan).pipe(
+      map((simulation) => {
+        return {
+          planDescription: '',
+          valueWithPlan: simulation.valueWithPlan,
+          valueWithoutPlan: simulation.valueWithoutPlan,
+        };
+      })
+    );
   }
 
   cancel(): void {
